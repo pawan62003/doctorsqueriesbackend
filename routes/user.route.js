@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 
 
+
 UserRoute.post('/signup',async(req,res)=>{
     const {email,password} = req.body
     try {
@@ -37,12 +38,14 @@ UserRoute.post("/login",async (req,res)=>{
     try {
         const user = await UserModel.findOne({email});
         if(!user){
+        
             res.send({"msg":"please login first"})
         }
+        
         else{
             
             bcrypt.compare(password, user.password, function(err, result) {
-                if(!result){
+                if(err){
                     res.send({err:"please enter valid cradential"})
                 }
                 else{
