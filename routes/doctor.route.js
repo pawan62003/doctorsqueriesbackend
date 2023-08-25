@@ -42,6 +42,15 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   return distance;
 }
 
+DoctorRoute.get("/all",async(req,res)=>{
+  try {
+    const data = await DoctorModel.find()
+    res.send(data)
+  } catch (error) {
+    res.send(error)
+  }
+})
+
 DoctorRoute.get("/", async (req, res) => {
    
     const { page, limit, spacility } = req.query;

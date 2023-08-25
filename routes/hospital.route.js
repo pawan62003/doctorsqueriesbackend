@@ -12,6 +12,16 @@ HospitalRoute.get('/',async(req,res)=>{
     }
 });
 
+HospitalRoute.get("/:id",async(req,res)=>{
+    try {
+        const {id} = req.params;
+        const hospital = await HospitalModel.findById(id);
+        res.send(hospital)
+    } catch (error) {
+        res.send({"err":error})
+    }
+})
+
 HospitalRoute.get('/',async(req,res)=>{
     try {
         
