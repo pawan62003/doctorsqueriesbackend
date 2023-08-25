@@ -42,6 +42,16 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   return distance;
 }
 
+DoctorRoute.delete("/delete/:id", async(req,res)=>{
+  try {
+    const id = req.params.id
+    const afterDeletion = await DoctorModel.findByIdAndDelete({_id:id})
+    res.send({msg:`doctor id deleted with id: ${id}`})
+  } catch (error) {
+    res.send(error)
+  }
+})
+
 DoctorRoute.get("/all",async(req,res)=>{
   try {
     const data = await DoctorModel.find()
@@ -58,7 +68,6 @@ DoctorRoute.get("/", async (req, res) => {
     const newPage = page || 1;
     const newLimit = limit || 3;
     const skip = (newPage - 1) * newLimit;
-    // if (spacility) query.spacility = spacility || {}
     try {
       const doctor = await DoctorModel.find().skip(skip).limit(newLimit);
       // res.send(doctor);

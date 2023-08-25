@@ -5,6 +5,7 @@ const {AdminModel} = require("../models/admin.model")
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt')
 
+
 AdminRoute.post("/signup",async(req,res)=>{
     const {email,password} = req.body
     try {
