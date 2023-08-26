@@ -52,6 +52,17 @@ DoctorRoute.delete("/delete/:id", async(req,res)=>{
   }
 })
 
+DoctorRoute.patch("/update/:id",async(req,res)=>{
+  try {
+    const updatedData = req.body
+    const id = req.params.id
+    const afterUpdation = await DoctorModel.findByIdAndUpdate({_id:id},updatedData)
+    res.send({"msg":"doctors data is updated successfully"})
+  } catch (error) {
+    res.send(error)
+  }
+})
+
 DoctorRoute.get("/all",async(req,res)=>{
   try {
     const data = await DoctorModel.find()
@@ -72,7 +83,7 @@ DoctorRoute.get("/", async (req, res) => {
       const doctor = await DoctorModel.find().skip(skip).limit(newLimit);
       // res.send(doctor);
       if (doctor.length === 0) {
-        res.status(404).send({ message: "Product not available" });
+        res.status(404).send({ message: "No Doctor's Found" });
       } else {
         const count = await DoctorModel.countDocuments();
         res.status(200).send({
