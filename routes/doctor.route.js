@@ -77,7 +77,7 @@ DoctorRoute.get("/", async (req, res) => {
     const { page, limit, spacility } = req.query;
     const query = {};
     const newPage = page || 1;
-    const newLimit = limit || 3;
+    const newLimit = limit || 6;
     const skip = (newPage - 1) * newLimit;
     try {
       const doctor = await DoctorModel.find().skip(skip).limit(newLimit);
