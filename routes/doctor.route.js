@@ -87,6 +87,7 @@ DoctorRoute.get("/", async (req, res) => {
       } else {
         const count = await DoctorModel.countDocuments();
         res.status(200).send({
+          
           doctor,
           currentPage: parseInt(newPage),
           totalPages: Math.ceil(count / newLimit),
