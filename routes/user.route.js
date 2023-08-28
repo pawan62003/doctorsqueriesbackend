@@ -43,7 +43,7 @@ UserRoute.post("/login",async (req,res)=>{
         else{
             bcrypt.compare(password, user.password, function(err, result) {
                 if(!result){
-                    res.send({err:"please enter valid cradential"})
+                    res.send({msg:"please enter valid cradential"})
                 }
                 else{
                     const token = jwt.sign({ userID: user._id}, 'solo_project');
