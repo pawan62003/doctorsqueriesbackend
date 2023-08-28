@@ -38,14 +38,11 @@ UserRoute.post("/login",async (req,res)=>{
     try {
         const user = await UserModel.findOne({email});
         if(!user){
-        
-            res.send({"msg":"please login first"})
+            res.send({"msg":"please Signup first"})
         }
-        
         else{
-            
             bcrypt.compare(password, user.password, function(err, result) {
-                if(err){
+                if(!result){
                     res.send({err:"please enter valid cradential"})
                 }
                 else{
