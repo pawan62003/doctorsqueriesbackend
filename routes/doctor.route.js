@@ -127,7 +127,7 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
             location.longitude
           );
           console.log(distance);
-          if (distance <= 500) {
+          if (distance <= 15) {
             distances.push({ person, distance });
           }
         }
