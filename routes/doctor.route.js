@@ -110,11 +110,12 @@ DoctorRoute.get("/:id", async (req, res) => {
 });
 
 DoctorRoute.get("/doctors/near", async (req, res) => {
-    const { lat: latitude, lon: longitude } = req.query;
+    const { lat: latitude, lon: longitude,cat } = req.query;
 
     try {
       const distances = [];
-      const doctors = await DoctorModel.find();
+      regexPattern = cat.split(' ').map(term => `(?=.*${term})`).join('');
+      const doctors = await DoctorModel.find({ spacility: { $regex: regexPattern, $options: 'i' }});
       for (const person of doctors) {
         const { location: doctorlocation } = person;
         const location = await geocodeCity(`${doctorlocation}, india`);
