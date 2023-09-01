@@ -42,62 +42,62 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   return distance;
 }
 
-DoctorRoute.delete("/delete/:id", async(req,res)=>{
+DoctorRoute.delete("/delete/:id", async (req, res) => {
   try {
-    const id = req.params.id
-    const afterDeletion = await DoctorModel.findByIdAndDelete({_id:id})
-    res.send({msg:`doctor id deleted with id: ${id}`})
+    const id = req.params.id;
+    const afterDeletion = await DoctorModel.findByIdAndDelete({ _id: id });
+    res.send({ msg: `doctor id deleted with id: ${id}` });
   } catch (error) {
-    res.send(error)
+    res.send(error);
   }
-})
+});
 
-DoctorRoute.patch("/update/:id",async(req,res)=>{
+DoctorRoute.patch("/update/:id", async (req, res) => {
   try {
-    const updatedData = req.body
-    const id = req.params.id
-    const afterUpdation = await DoctorModel.findByIdAndUpdate({_id:id},updatedData)
-    res.send({"msg":"doctors data is updated successfully"})
+    const updatedData = req.body;
+    const id = req.params.id;
+    const afterUpdation = await DoctorModel.findByIdAndUpdate(
+      { _id: id },
+      updatedData
+    );
+    res.send({ msg: "doctors data is updated successfully" });
   } catch (error) {
-    res.send(error)
+    res.send(error);
   }
-})
+});
 
-DoctorRoute.get("/all",async(req,res)=>{
+DoctorRoute.get("/all", async (req, res) => {
   try {
-    const data = await DoctorModel.find()
-    res.send(data)
+    const data = await DoctorModel.find();
+    res.send(data);
   } catch (error) {
-    res.send(error)
+    res.send(error);
   }
-})
+});
 
 DoctorRoute.get("/", async (req, res) => {
-   
-    const { page, limit, spacility } = req.query;
-    const query = {};
-    const newPage = page || 1;
-    const newLimit = limit || 6;
-    const skip = (newPage - 1) * newLimit;
-    try {
-      const doctor = await DoctorModel.find().skip(skip).limit(newLimit);
-      // res.send(doctor);
-      if (doctor.length === 0) {
-        res.status(404).send({ message: "No Doctor's Found" });
-      } else {
-        const count = await DoctorModel.countDocuments();
-        res.status(200).send({
-          
-          doctor,
-          currentPage: parseInt(newPage),
-          totalPages: Math.ceil(count / newLimit),
-        });
-      }
-    } catch (error) {
-      res.send({ err: error });
+  const { page, limit, spacility } = req.query;
+  const query = {};
+  const newPage = page || 1;
+  const newLimit = limit || 6;
+  const skip = (newPage - 1) * newLimit;
+  try {
+    const doctor = await DoctorModel.find().skip(skip).limit(newLimit);
+    // res.send(doctor);
+    if (doctor.length === 0) {
+      res.status(404).send({ message: "No Doctor's Found" });
+    } else {
+      const count = await DoctorModel.countDocuments();
+      res.status(200).send({
+        doctor,
+        currentPage: parseInt(newPage),
+        totalPages: Math.ceil(count / newLimit),
+      });
     }
+  } catch (error) {
+    res.send({ err: error });
   }
-);
+});
 
 DoctorRoute.get("/:id", async (req, res) => {
   try {
@@ -110,51 +110,55 @@ DoctorRoute.get("/:id", async (req, res) => {
 });
 
 DoctorRoute.get("/doctors/near", async (req, res) => {
-    const { lat: latitude, lon: longitude,cat } = req.query;
+  const { lat: latitude, lon: longitude, cat } = req.query;
 
-    try {
-      const distances = [];
-      regexPattern = cat.split(' ').map(term => `(?=.*${term})`).join('');
-      const doctors = await DoctorModel.find({ spacility: { $regex: regexPattern, $options: 'i' }});
-      for (const person of doctors) {
-        const { location: doctorlocation } = person;
-        const location = await geocodeCity(`${doctorlocation}, india`);
+  try {
+    const distances = [];
+    regexPattern = cat
+      .split(" ")
+      .map((term) => `(?=.*${term})`)
+      .join("");
+    const doctors = await DoctorModel.find({
+      spacility: { $regex: regexPattern, $options: "i" },
+    });
+    for (const person of doctors) {
+      const { location: doctorlocation } = person;
+      const location = await geocodeCity(`${doctorlocation}, india`);
 
-        if (location) {
-          const distance = calculateDistance(
-            latitude,
-            longitude,
-            location.latitude,
-            location.longitude
-          );
-          console.log(distance);
-          if (distance <= 15) {
-            distances.push({ person, distance });
-          }
+      if (location) {
+        const distance = calculateDistance(
+          latitude,
+          longitude,
+          location.latitude,
+          location.longitude
+        );
+        if (distance <= 15) {
+          person.set('distance', distance);
+          distances.push({ person, distance });
         }
       }
+    }
 
-      // if (distances.length >= 3) {
-      //   distances.sort((a, b) => a.distance - b.distance);
-      //   const nearestPersons = distances
-      //     .slice(0, 3)
-      //     .map(({ person }) => person);
+    // if (distances.length >= 3) {
+    //   distances.sort((a, b) => a.distance - b.distance);
+    //   const nearestPersons = distances
+    //     .slice(0, 3)
+    //     .map(({ person }) => person);
 
-      //   res.json(nearestPersons);
-      // } 
-      // else {
-      //   distances.sort((a, b) => a.distance - b.distance);
-      //   const nearestPersons = distances.map(({ person }) => person);
+    //   res.json(nearestPersons);
+    // }
+    // else {
+    //   distances.sort((a, b) => a.distance - b.distance);
+    //   const nearestPersons = distances.map(({ person }) => person);
 
-      //   res.json(nearestPersons);
-      // }
-      distances.sort((a, b) => a.distance - b.distance);
-        const nearestPersons = distances.map(({ person }) => person);
+    //   res.json(nearestPersons);
+    // }
+    distances.sort((a, b) => a.distance - b.distance);
+    const nearestPersons = distances.map(({ person }) => person);
 
-        res.json(nearestPersons);
-    } catch (error) {}
-  }
-);
+    res.json(nearestPersons);
+  } catch (error) {}
+});
 
 DoctorRoute.post("/", async (req, res) => {
   try {

@@ -18,6 +18,7 @@ const DoctorSchema = mongoose.Schema({
     feature6:{required:true,type:String},
     feature7:{required:true,type:String},
     feature8:{required:true,type:String},
+    distance: Number,
     feature9:{type:String},
     feature10:{type:String},
     feature11:{type:String},
