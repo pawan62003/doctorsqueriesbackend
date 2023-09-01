@@ -123,7 +123,7 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
     });
     for (const person of doctors) {
       const { location: doctorlocation } = person;
-      const location = await geocodeCity(`${doctorlocation}, india`);
+      const location = await geocodeCity(`${doctorlocation},India, india`);
 
       if (location) {
         const distance = calculateDistance(
@@ -132,7 +132,7 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
           location.latitude,
           location.longitude
         );
-        if (distance <= 15) {
+        if (distance <= 20) {
           person.set('distance', distance);
           distances.push({ person, distance });
         }
