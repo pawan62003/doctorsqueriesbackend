@@ -134,19 +134,24 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
         }
       }
 
-      if (distances.length >= 3) {
-        distances.sort((a, b) => a.distance - b.distance);
-        const nearestPersons = distances
-          .slice(0, 3)
-          .map(({ person }) => person);
+      // if (distances.length >= 3) {
+      //   distances.sort((a, b) => a.distance - b.distance);
+      //   const nearestPersons = distances
+      //     .slice(0, 3)
+      //     .map(({ person }) => person);
 
-        res.json(nearestPersons);
-      } else {
-        distances.sort((a, b) => a.distance - b.distance);
+      //   res.json(nearestPersons);
+      // } 
+      // else {
+      //   distances.sort((a, b) => a.distance - b.distance);
+      //   const nearestPersons = distances.map(({ person }) => person);
+
+      //   res.json(nearestPersons);
+      // }
+      distances.sort((a, b) => a.distance - b.distance);
         const nearestPersons = distances.map(({ person }) => person);
 
         res.json(nearestPersons);
-      }
     } catch (error) {}
   }
 );
