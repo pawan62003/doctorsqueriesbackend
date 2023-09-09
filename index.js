@@ -1,4 +1,5 @@
 const express = require("express");
+// const sendgrid = require('@sendgrid/mail')
 const cors = require('cors');
 const {connection} = require('./db');
 const { UserRoute } = require("./routes/user.route");
@@ -6,18 +7,22 @@ const { DoctorRoute } = require("./routes/doctor.route");
 const { auth } = require("./middleware/auth.middleware");
 const {HospitalRoute} = require("./routes/hospital.route")
 const { AdminRoute } = require("./routes/admin.route");
-const {ReviewRoute} = require("./routes/review.route")
+const {ReviewRoute} = require("./routes/review.route");
+const {AppointmentRoute} = require("./routes/appointment.route")
 
 const server = express();
 server.use(express.json());
 server.use(cors());
 
+
+
 server.use('/user',UserRoute);
 server.use('/admin',AdminRoute);
 server.use('/reviews',ReviewRoute)
-server.use(auth);
 server.use('/doctors',DoctorRoute);
 server.use("/hospital",HospitalRoute);
+server.use(auth);
+server.use("/appointment",AppointmentRoute)
 
 server.listen(8585,async()=>{
     try {

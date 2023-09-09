@@ -83,7 +83,6 @@ DoctorRoute.get("/", async (req, res) => {
   const skip = (newPage - 1) * newLimit;
   try {
     const doctor = await DoctorModel.find().skip(skip).limit(newLimit);
-    // res.send(doctor);
     if (doctor.length === 0) {
       res.status(404).send({ message: "No Doctor's Found" });
     } else {
