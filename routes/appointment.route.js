@@ -1,54 +1,58 @@
 const express = require("express");
 const AppointmentRoute = express.Router();
-const { appointMentModel } = require("../models/appointment.model");
+const { AppointMentModel } = require("../models/appointment.model");
 
 AppointmentRoute.get("/", async (req, res) => {
-    try {
-        const data = await appointMentModel.find()
-        res.send(data)
-    } catch (error) {
-        res.send({msg:"failed to find appointment"})
-    }
+  try {
+    const data = await AppointMentModel.find();
+    res.send(data);
+  } catch (error) {
+    res.send({ msg: "failed to find appointment" });
+  }
 });
 
 AppointmentRoute.post("/", async (req, res) => {
     try {
-        const newAppointment = new appointMentModel(req.body)
-        await newAppointment.save()
-        res.send({msg:"new appointment created successfully"})
+      const newAppointment = new AppointMentModel(req.body);
+      const savedAppointment = await newAppointment.save();
+      res.status(201).json({ msg: "Appointment saved successfully", appointment: savedAppointment });
     } catch (error) {
-        res.send({msg:"error while saving appointment"})
+      console.error("Error while creating an appointment:", error);
+      res.status(500).json({ msg: "Failed to create an appointment" });
     }
-});
+  });
 
 AppointmentRoute.get("/:id", async (req, res) => {
-    try {
-        const {id} = req.params
-        const data = await appointMentModel.findById(id)
-        res.send(data);
-    } catch (error) {
-        res.send({msg:"error while getting a appointment"})
-    }
+  try {
+    const { id } = req.params;
+    const data = await AppointMentModel.findById(id);
+    res.send(data);
+  } catch (error) {
+    res.send({ msg: "error while getting a appointment" });
+  }
 });
 
 AppointmentRoute.delete("/:id", async (req, res) => {
-    try {
-        const {id} = req.params
-        const afterDeletion = await appointMentModel.findByIdAndDelete(id)
-        res.send({msg:`appointment deleted with id ${id}`})
-    } catch (error) {
-        res.send({msg:"error while deleting a appointment"})
-    }
+  try {
+    const { id } = req.params;
+    const afterDeletion = await AppointMentModel.findByIdAndDelete(id);
+    res.send({ msg: `appointment deleted with id ${id}` });
+  } catch (error) {
+    res.send({ msg: "error while deleting a appointment" });
+  }
 });
 
 AppointmentRoute.patch("/:id", async (req, res) => {
-    try {
-        const {id} = req.params
-        const afterUpdation = await appointMentModel.findByIdAndUpdate({_id:id},req.body)
-        res.send({msg:"appointment successfully updated"})
-    } catch (error) {
-        res.send({msg:"error while updating a appointment"})
-    }
+  try {
+    const { id } = req.params;
+    const afterUpdation = await AppointMentModel.findByIdAndUpdate(
+      { _id: id },
+      req.body
+    );
+    res.send({ msg: "appointment successfully updated" });
+  } catch (error) {
+    res.send({ msg: "error while updating a appointment" });
+  }
 });
 
 module.exports = {

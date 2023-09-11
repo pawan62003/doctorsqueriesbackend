@@ -21,8 +21,8 @@ server.use('/admin',AdminRoute);
 server.use('/reviews',ReviewRoute)
 server.use('/doctors',DoctorRoute);
 server.use("/hospital",HospitalRoute);
-server.use(auth);
 server.use("/appointment",AppointmentRoute)
+server.use(auth);
 
 server.listen(8585,async()=>{
     try {

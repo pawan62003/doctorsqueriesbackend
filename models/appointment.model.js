@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const appointMentSchema = mongoose.Schema(
   {
-    useId: { required: true, type: String },
+    userId: { required: true, type: String },
     doctorName:{required: true, type: String},
     date:{required: true, type: String},
     time:{ required: true, type:String},
@@ -21,8 +21,8 @@ const appointMentSchema = mongoose.Schema(
   }
 );
 
-const appointMentModel = mongoose.model("appointment", appointMentSchema);
+const AppointMentModel = mongoose.model("appointment", appointMentSchema);
 
 module.exports = {
-  appointMentModel,
+  AppointMentModel,
 };
