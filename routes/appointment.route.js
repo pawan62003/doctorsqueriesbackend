@@ -4,7 +4,16 @@ const { AppointMentModel } = require("../models/appointment.model");
 
 AppointmentRoute.get("/", async (req, res) => {
   try {
-    const data = await AppointMentModel.find();
+    const query = {}
+    const {user,status} = req.query
+    if(user){
+      query.userId = user
+    }
+    if(status){
+      query.status = status
+    }
+
+    const data = await AppointMentModel.find(query);
     res.send(data);
   } catch (error) {
     res.send({ msg: "failed to find appointment" });
