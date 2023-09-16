@@ -52,6 +52,7 @@ DoctorRoute.delete("/delete/:id", async (req, res) => {
   }
 });
 
+
 DoctorRoute.patch("/update/:id", async (req, res) => {
   try {
     const updatedData = req.body;
