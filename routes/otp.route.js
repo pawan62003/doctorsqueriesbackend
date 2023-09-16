@@ -39,7 +39,7 @@ OtpRoute.post("/send", async (req, res) => {
       if (error) {
         res.send({ err: error });
       } else {
-        res.send({ msg: info.response });
+        res.send({ msg: "otp sent successfully"});
       }
     });
   } catch (error) {
