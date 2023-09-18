@@ -162,8 +162,8 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
 DoctorRoute.post("/", async (req, res) => {
   try {
     const find = await DoctorModel.find({ email: req.body.email });
-   
-    if (find.length>0) {
+
+    if (find.length > 0) {
       res.send({ msg: "Accout allredy created with this email" });
     } else {
       const data = new DoctorModel(req.body);
@@ -179,10 +179,14 @@ DoctorRoute.post("/login", async (req, res) => {
   try {
     const find = await DoctorModel.find({
       email: req.body.email,
-      password: req.body.password,
     });
-    if (find.length>0) {
-      res.send({ msg: "doctor login successful" });
+    if (find.length > 0) {
+      if(find[0].password === req.body.password){
+        res.send({msg:"Doctor Login Success"})
+      }
+      else{
+        res.send({ msg: "please enter correct password"})
+      }
     } else {
       res.send({ msg: "Data not found , please Signup !!" });
     }
