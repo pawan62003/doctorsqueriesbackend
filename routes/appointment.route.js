@@ -6,9 +6,11 @@ const jwt = require("jsonwebtoken");
 AppointmentRoute.get("/", async (req, res) => {
   try {
     const query = {};
-    const { user, status } = req.query;
-    if (user) {
-      query.userId = user;
+    const { token, status } = req.query;
+    if (token) {
+      const decode = jwt.verify(token, "solo_project");
+      console.log(decode.userID)
+      query.userId = decode.userID;
     }
     if (status) {
       query.status = status;
