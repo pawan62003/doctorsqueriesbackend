@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+
 const DoctorSchema = mongoose.Schema({
     name:{type:String},
     image:{type:String},
