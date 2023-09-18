@@ -28,8 +28,8 @@ const DoctorSchema = mongoose.Schema({
     feature14:{type:String},
     feature15:{type:String},
     password:{type:String},
-    email:{type:String},
-    isPremium:{type:Boolean}
+    email:{type:String,required:true},
+    isPremium:{type:Boolean,required:true}
 },{
     versionKey:false
 })

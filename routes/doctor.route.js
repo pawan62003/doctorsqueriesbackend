@@ -52,7 +52,6 @@ DoctorRoute.delete("/delete/:id", async (req, res) => {
   }
 });
 
-
 DoctorRoute.patch("/update/:id", async (req, res) => {
   try {
     const updatedData = req.body;
@@ -133,7 +132,7 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
           location.longitude
         );
         if (distance <= 20) {
-          person.set('distance', distance);
+          person.set("distance", distance);
           distances.push({ person, distance });
         }
       }
@@ -162,14 +161,34 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
 
 DoctorRoute.post("/", async (req, res) => {
   try {
-    const data = new DoctorModel(req.body);
-    await data.save();
-    res.send({ msg: "doctor is added on database" });
+    const find = await DoctorModel.find({ email: req.body.email });
+    if (find) {
+      res.send({ msg: "Accout allredy created with this email" });
+    } else {
+      const data = new DoctorModel(req.body);
+      await data.save();
+      res.send({ msg: "doctor is added on database" });
+    }
   } catch (error) {
     res.send({ err: error });
   }
 });
 
+DoctorRoute.post("/login", async (req, res) => {
+  try {
+    const find = await DoctorModel.find({
+      email: req.body.email,
+      password: req.body.password,
+    });
+    if (find) {
+      res.send({ msg: "doctor login successful" });
+    } else {
+      res.send({ msg: "Data not found , please Signup !!" });
+    }
+  } catch (error) {
+    res.send({ err: error });
+  }
+});
 module.exports = {
   DoctorRoute,
 };
