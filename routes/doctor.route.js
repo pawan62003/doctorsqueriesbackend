@@ -183,7 +183,7 @@ DoctorRoute.post("/login", async (req, res) => {
     });
     if (find.length > 0) {
       if(find[0].password === req.body.password){
-        const token = jwt.sign({ doctorID: find[0]._id}, 'DQ_doctor_dashboard');
+        const token = jwt.sign({ doctorID: find[0]._id}, 'solo_project');
         res.send({msg:"Doctor Login Success",status:find[0].status,token})
       }
       else{

@@ -9,8 +9,12 @@ AppointmentRoute.get("/", async (req, res) => {
     const { token, status } = req.query;
     if (token) {
       const decode = jwt.verify(token, "solo_project");
-      console.log(decode.userID)
-      query.userId = decode.userID;
+      if(decode.userID){
+        query.userId = decode.userID;
+      }
+      if(decode.doctorID){
+        query.doctorID = decode.doctorID
+      }
     }
     if (status) {
       query.status = status;
