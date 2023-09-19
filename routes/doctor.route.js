@@ -3,6 +3,7 @@ const { DoctorModel } = require("../models/doctors.model");
 const DoctorRoute = express.Router();
 const axios = require("axios");
 const API_KEY = "15106e32380f4441a9e659ec6346fa9c";
+const jwt  = require("jsonwebtoken")
 
 async function geocodeCity(city) {
   try {
@@ -182,7 +183,8 @@ DoctorRoute.post("/login", async (req, res) => {
     });
     if (find.length > 0) {
       if(find[0].password === req.body.password){
-        res.send({msg:"Doctor Login Success",status:find[0].status})
+        const token = jwt.sign({ doctorID: find[0]._id}, 'DQ_doctor_dashboard');
+        res.send({msg:"Doctor Login Success",status:find[0].status,token})
       }
       else{
         res.send({ msg: "please enter correct password"})
