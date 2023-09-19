@@ -55,9 +55,12 @@ DoctorRoute.delete("/delete/:id", async (req, res) => {
 
 DoctorRoute.patch("/update", async (req, res) => {
   try {
+    const { token } = req.query;
     const decode = jwt.verify(token, "solo_project");
     const updatedData = req.body;
-    delete req.body.token
+    delete req.query.token;
+
+    console.log(decode);
 
     const afterUpdation = await DoctorModel.findByIdAndUpdate(
       { _id: decode.doctorID },
