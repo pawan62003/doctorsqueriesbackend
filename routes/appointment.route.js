@@ -13,7 +13,7 @@ AppointmentRoute.get("/", async (req, res) => {
         query.userId = decode.userID;
       }
       if(decode.doctorID){
-        query.doctorID = decode.doctorID
+        query.doctorName = decode.doctorID
       }
     }
     if (status) {
