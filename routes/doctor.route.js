@@ -182,7 +182,7 @@ DoctorRoute.post("/login", async (req, res) => {
     });
     if (find.length > 0) {
       if(find[0].password === req.body.password){
-        res.send({msg:"Doctor Login Success"})
+        res.send({msg:"Doctor Login Success",status:find[0].status})
       }
       else{
         res.send({ msg: "please enter correct password"})
