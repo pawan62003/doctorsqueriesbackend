@@ -3,7 +3,7 @@ const { DoctorModel } = require("../models/doctors.model");
 const DoctorRoute = express.Router();
 const axios = require("axios");
 const API_KEY = "15106e32380f4441a9e659ec6346fa9c";
-const jwt  = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 
 async function geocodeCity(city) {
   try {
@@ -53,12 +53,14 @@ DoctorRoute.delete("/delete/:id", async (req, res) => {
   }
 });
 
-DoctorRoute.patch("/update/:id", async (req, res) => {
+DoctorRoute.patch("/update", async (req, res) => {
   try {
+    const decode = jwt.verify(token, "solo_project");
     const updatedData = req.body;
-    const id = req.params.id;
+    delete req.body.token
+
     const afterUpdation = await DoctorModel.findByIdAndUpdate(
-      { _id: id },
+      { _id: decode.doctorID },
       updatedData
     );
     res.send({ msg: "doctors data is updated successfully" });
@@ -182,12 +184,15 @@ DoctorRoute.post("/login", async (req, res) => {
       email: req.body.email,
     });
     if (find.length > 0) {
-      if(find[0].password === req.body.password){
-        const token = jwt.sign({ doctorID: find[0]._id}, 'solo_project');
-        res.send({msg:"Doctor Login Success",status:find[0].status,token})
-      }
-      else{
-        res.send({ msg: "please enter correct password"})
+      if (find[0].password === req.body.password) {
+        const token = jwt.sign({ doctorID: find[0]._id }, "solo_project");
+        res.send({
+          msg: "Doctor Login Success",
+          status: find[0].status,
+          token,
+        });
+      } else {
+        res.send({ msg: "please enter correct password" });
       }
     } else {
       res.send({ msg: "Data not found , please Signup !!" });
