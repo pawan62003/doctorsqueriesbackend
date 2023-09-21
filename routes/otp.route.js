@@ -23,12 +23,12 @@ var transporter = nodemailer.createTransport({
 OtpRoute.post("/send", async (req, res) => {
   try {
     const { email } = req.body;
-    const otp = generateOTP()
+    const otp = generateOTP();
 
-    const newOTP = new OtpModel({...req.body,otp});
+    const newOTP = new OtpModel({ ...req.body, otp });
     await newOTP.save();
 
-    var mailOptions = {
+    let mailOptions = {
       from: "pawan6200327812@gmail.com",
       to: email,
       subject: "Doctors Query Appointment verifacation",
@@ -39,7 +39,7 @@ OtpRoute.post("/send", async (req, res) => {
       if (error) {
         res.send({ err: error });
       } else {
-        res.send({ msg: "otp sent successfully"});
+        res.send({ msg: "otp sent successfully" });
       }
     });
   } catch (error) {
@@ -47,18 +47,39 @@ OtpRoute.post("/send", async (req, res) => {
   }
 });
 
-OtpRoute.post("/verify", async(req,res) => {
+OtpRoute.post("/verify", async (req, res) => {
   try {
-    const {email,otp} = req.body
-    const find = await OtpModel.find({email,otp})
-    if(find.length>0){
-      res.send({msg:"otp verify success"})
-    }
-    else{
-      res.send({"msg":"please enter correct otp"})
+    const { email, otp } = req.body;
+    const find = await OtpModel.find({ email, otp });
+    if (find.length > 0) {
+      res.send({ msg: "otp verify success" });
+    } else {
+      res.send({ msg: "please enter correct otp" });
     }
   } catch (error) {
-    res.send({err:error})
+    res.send({ err: error });
+  }
+});
+
+OtpRoute.post("/send-mail", async (req, res) => {
+  try {
+    let { email, massage } = req.body;
+    let mailOptions = {
+      from: "pawan6200327812@gmail.com",
+      to: email,
+      subject: "Doctors Query Appointment verifacation",
+      text: massage,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        res.send({ err: error });
+      } else {
+        res.send({ msg: "Notification sent Successfully" });
+      }
+    });
+  } catch (error) {
+    res.send({ err: error });
   }
 });
 
