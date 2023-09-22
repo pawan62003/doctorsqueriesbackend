@@ -69,6 +69,7 @@ OtpRoute.post("/send-mail", async (req, res) => {
       to: email,
       subject: "Doctors Query Appointment verifacation",
       text: massage,
+      
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
