@@ -60,8 +60,6 @@ DoctorRoute.patch("/update", async (req, res) => {
     const updatedData = req.body;
     delete req.query.token;
 
-    console.log(decode);
-
     const afterUpdation = await DoctorModel.findByIdAndUpdate(
       { _id: decode.doctorID },
       updatedData
@@ -82,22 +80,28 @@ DoctorRoute.get("/all", async (req, res) => {
 });
 
 DoctorRoute.get("/", async (req, res) => {
-  const { page, limit, spacility } = req.query;
+  const { page, limit, spacility, token } = req.query;
   const query = {};
   const newPage = page || 1;
   const newLimit = limit || 6;
   const skip = (newPage - 1) * newLimit;
   try {
-    const doctor = await DoctorModel.find().skip(skip).limit(newLimit);
-    if (doctor.length === 0) {
-      res.status(404).send({ message: "No Doctor's Found" });
+    if (token) {
+      const decode = jwt.verify(token, "solo_project");
+      const data = await DoctorModel.find({ _id: decode.doctorID });
+      res.send(data);
     } else {
-      const count = await DoctorModel.countDocuments();
-      res.status(200).send({
-        doctor,
-        currentPage: parseInt(newPage),
-        totalPages: Math.ceil(count / newLimit),
-      });
+      const doctor = await DoctorModel.find().skip(skip).limit(newLimit);
+      if (doctor.length === 0) {
+        res.status(404).send({ message: "No Doctor's Found" });
+      } else {
+        const count = await DoctorModel.countDocuments();
+        res.status(200).send({
+          doctor,
+          currentPage: parseInt(newPage),
+          totalPages: Math.ceil(count / newLimit),
+        });
+      }
     }
   } catch (error) {
     res.send({ err: error });
