@@ -10,6 +10,7 @@ const { AdminRoute } = require("./routes/admin.route");
 const { ReviewRoute } = require("./routes/review.route");
 const { AppointmentRoute } = require("./routes/appointment.route");
 const { OtpRoute } = require("./routes/otp.route");
+const { BlogModel } = require("./models/blog.model");
 
 const server = express();
 server.use(express.json());
@@ -23,6 +24,7 @@ server.use("/doctors", DoctorRoute);
 server.use("/hospital", HospitalRoute);
 server.use("/appointment", AppointmentRoute);
 server.use("/otp",OtpRoute)
+server.use("/blog",BlogModel)
 server.use(auth);
 
 
