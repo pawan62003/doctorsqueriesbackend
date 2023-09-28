@@ -70,6 +70,20 @@ DoctorRoute.patch("/update", async (req, res) => {
   }
 });
 
+DoctorRoute.patch("/update/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const afterUpdation = await DoctorModel.findByIdAndUpdate(
+      { _id: id },
+      req.body
+    );
+    res.send({ msk: "updation Successfully" });
+  } catch (error) {
+    res.send({ err: error });
+  }
+});
+
 DoctorRoute.get("/all", async (req, res) => {
   try {
     const data = await DoctorModel.find();
@@ -80,12 +94,12 @@ DoctorRoute.get("/all", async (req, res) => {
 });
 
 DoctorRoute.get("/", async (req, res) => {
-  const { page, limit, spacility, token,status } = req.query;
+  const { page, limit, spacility, token, status } = req.query;
   const query = {};
   const newPage = page || 1;
   const newLimit = limit || 6;
   const skip = (newPage - 1) * newLimit;
-  if(status){
+  if (status) {
     query[status] = status;
   }
   try {
@@ -122,7 +136,7 @@ DoctorRoute.get("/:id", async (req, res) => {
 });
 
 DoctorRoute.get("/doctors/near", async (req, res) => {
-  const { lat: latitude, lon: longitude, cat,status } = req.query;
+  const { lat: latitude, lon: longitude, cat, status } = req.query;
 
   try {
     const distances = [];
@@ -131,7 +145,8 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
       .map((term) => `(?=.*${term})`)
       .join("");
     const doctors = await DoctorModel.find({
-      spacility: { $regex: regexPattern, $options: "i" },status
+      spacility: { $regex: regexPattern, $options: "i" },
+      status,
     });
     for (const person of doctors) {
       const { location: doctorlocation } = person;
