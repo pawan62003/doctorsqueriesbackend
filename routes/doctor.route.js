@@ -80,22 +80,25 @@ DoctorRoute.get("/all", async (req, res) => {
 });
 
 DoctorRoute.get("/", async (req, res) => {
-  const { page, limit, spacility, token } = req.query;
+  const { page, limit, spacility, token,status } = req.query;
   const query = {};
   const newPage = page || 1;
   const newLimit = limit || 6;
   const skip = (newPage - 1) * newLimit;
+  if(status){
+    query[status] = status;
+  }
   try {
     if (token) {
       const decode = jwt.verify(token, "solo_project");
       const data = await DoctorModel.find({ _id: decode.doctorID });
       res.send(data);
     } else {
-      const doctor = await DoctorModel.find().skip(skip).limit(newLimit);
+      const doctor = await DoctorModel.find(query).skip(skip).limit(newLimit);
       if (doctor.length === 0) {
         res.status(404).send({ message: "No Doctor's Found" });
       } else {
-        const count = await DoctorModel.countDocuments();
+        const count = await DoctorModel.countDocuments(query);
         res.status(200).send({
           doctor,
           currentPage: parseInt(newPage),
@@ -119,7 +122,7 @@ DoctorRoute.get("/:id", async (req, res) => {
 });
 
 DoctorRoute.get("/doctors/near", async (req, res) => {
-  const { lat: latitude, lon: longitude, cat } = req.query;
+  const { lat: latitude, lon: longitude, cat,status } = req.query;
 
   try {
     const distances = [];
@@ -128,7 +131,7 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
       .map((term) => `(?=.*${term})`)
       .join("");
     const doctors = await DoctorModel.find({
-      spacility: { $regex: regexPattern, $options: "i" },
+      spacility: { $regex: regexPattern, $options: "i" },status
     });
     for (const person of doctors) {
       const { location: doctorlocation } = person;
