@@ -30,6 +30,7 @@ const DoctorSchema = mongoose.Schema({
     password:{type:String,required:true},
     email:{type:String,required:true},
     status:{type:String,required:true},
+    Availability :{type:Array},
     isPremium:{type:Boolean,}
 },{
     versionKey:false
