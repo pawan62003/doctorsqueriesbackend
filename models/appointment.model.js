@@ -4,7 +4,6 @@ const appointMentSchema = mongoose.Schema(
     userId: { required: true, type: String },
     doctorName:{required: true, type: String},
     date:{required: true, type: String},
-    time:{ required: true, type:String},
     specilaty:{required: true, type: String},
     reason: { required: true, type: String },
     checkup: { required: true, type: String },
