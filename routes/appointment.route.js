@@ -34,6 +34,7 @@ AppointmentRoute.post("/", async (req, res) => {
     if (decode) {
       req.body.userId = decode.userID;
       delete req.body.token;
+      
       const newAppointment = new AppointMentModel(req.body);
       const savedAppointment = await newAppointment.save();
       res.status(201).json({ msg: "Appointment saved successfully" });
