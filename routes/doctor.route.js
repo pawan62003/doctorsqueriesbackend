@@ -160,7 +160,7 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
           location.latitude,
           location.longitude
         );
-        if (distance <= 80) {
+        if (distance <= 280) {
           person.set("distance", distance);
           distances.push({ person, distance });
         }
