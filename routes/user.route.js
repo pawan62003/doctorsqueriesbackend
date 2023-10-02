@@ -55,12 +55,14 @@ UserRoute.post("/login",async (req,res)=>{
     }
 })
 
-UserRoute.get("/",(req,res) => {
+UserRoute.get("/",async(req,res) => {
     try {
         const token = req.query.token
         const decode = jwt.verify(token, "solo_project");
         if (decode) {
-          console.log(decode)
+        const user = await UserModel.find({_id:decode.userID})
+        console.log(user)
+        res.send(user[0].name)
         } else {
           res.send({ msg: "Please Login !!!" });
         }
