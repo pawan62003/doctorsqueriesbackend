@@ -32,7 +32,10 @@ const DoctorSchema = mongoose.Schema({
     status:{type:String,required:true},
     Availability:{type:Array},
     isPremium:{type:Boolean},
-    doctorProfile:{type:String}
+    profilePicture: {
+        data: Buffer, // Store binary image data
+        contentType: String, // Store the content type (e.g., image/jpeg)
+      },
 },{
     versionKey:false
 })
