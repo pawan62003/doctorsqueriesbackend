@@ -12,6 +12,7 @@ const { ReviewRoute } = require("./routes/review.route");
 const { AppointmentRoute } = require("./routes/appointment.route");
 const { OtpRoute } = require("./routes/otp.route");
 const { BlogRoute } = require("./routes/blog.route");
+const { BannerRoute } = require("./routes/banner.route");
 
 const server = express();
 const httpServer = http.createServer(server); // Create an HTTP server
@@ -23,6 +24,7 @@ server.use(cors());
 // ... (use your middleware and routes)
 
 // Middleware
+server.use("/banner",BannerRoute);
 server.use("/user", UserRoute);
 server.use("/admin", AdminRoute);
 server.use("/reviews", ReviewRoute);

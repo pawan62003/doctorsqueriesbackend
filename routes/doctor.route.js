@@ -4,9 +4,6 @@ const DoctorRoute = express.Router();
 const axios = require("axios");
 const API_KEY = "15106e32380f4441a9e659ec6346fa9c";
 const jwt = require("jsonwebtoken");
-const multer = require("multer");
-const crypto = require("crypto");
-const path = require("path");
 
 async function geocodeCity(city) {
   try {
@@ -56,103 +53,22 @@ DoctorRoute.delete("/delete/:id", async (req, res) => {
   }
 });
 
-
-
-
-
-
-// Set up multer for file uploads
-const storage = multer.memoryStorage(); // Store the file in memory
-const upload = multer({ storage });
-
-DoctorRoute.patch("/update", upload.single("profilePicture"), async (req, res) => {
+DoctorRoute.patch("/update", async (req, res) => {
   try {
     const { token } = req.query;
     const decode = jwt.verify(token, "solo_project");
     const updatedData = req.body;
     delete req.query.token;
 
-    // Create a new doctor object with the extracted data
-    const updatedDoctor = { ...updatedData };
-
-    // Check if a file was uploaded
-    if (req.file) {
-      // Generate a unique filename for the uploaded image
-      const filename =
-        crypto.randomBytes(16).toString("hex") +
-        path.extname(req.file.originalname);
-
-      // Create a writable stream to store the file in GridFS
-      const writeStream = gfs.createWriteStream({
-        filename,
-        contentType: req.file.mimetype,
-      });
-
-      // Pipe the file data from req.file.buffer to the GridFS stream
-      writeStream.write(req.file.buffer);
-      writeStream.end();
-
-      writeStream.on("close", (file) => {
-        // Save the file ID to the doctor's profilePicture field
-        updatedDoctor.profilePicture = file._id;
-
-        // Update the doctor's profile in MongoDB using Mongoose
-        DoctorModel.findByIdAndUpdate(
-          { _id: decode.doctorID },
-          updatedDoctor,
-          { new: true }, // Return the updated document
-          (err, updatedDoc) => {
-            if (err) {
-              return res.status(500).json({ error: "Internal Server Error" });
-            }
-            if (!updatedDoc) {
-              return res.status(404).json({ error: "Doctor not found" });
-            }
-            return res.status(200).json({
-              msg: "Doctor data updated successfully",
-              data: updatedDoc,
-            });
-          }
-        );
-      });
-    } else {
-      // If no file was uploaded, update the doctor's profile without the profilePicture field
-      DoctorModel.findByIdAndUpdate(
-        { _id: decode.doctorID },
-        updatedDoctor,
-        { new: true }, // Return the updated document
-        (err, updatedDoc) => {
-          if (err) {
-            return res.status(500).json({ error: "Internal Server Error" });
-          }
-          if (!updatedDoc) {
-            return res.status(404).json({ error: "Doctor not found" });
-          }
-          return res.status(200).json({
-            msg: "Doctor data updated successfully",
-            data: updatedDoc,
-          });
-        }
-      );
-    }
+    const afterUpdation = await DoctorModel.findByIdAndUpdate(
+      { _id: decode.doctorID },
+      updatedData
+    );
+    res.send({ msg: "doctors data is updated successfully" });
   } catch (error) {
     res.send(error);
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 DoctorRoute.patch("/update/:id", async (req, res) => {
   try {
@@ -184,9 +100,9 @@ DoctorRoute.get("/", async (req, res) => {
   const newLimit = limit || 6;
   const skip = (newPage - 1) * newLimit;
   if (status) {
-    query["status"] = status;
+    query['status'] = status;
   }
-  console.log(query);
+  console.log(query)
   try {
     if (token) {
       const decode = jwt.verify(token, "solo_project");
