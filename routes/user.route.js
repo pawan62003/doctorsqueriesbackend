@@ -55,6 +55,20 @@ UserRoute.post("/login",async (req,res)=>{
     }
 })
 
+UserRoute.get("/",(req,res) => {
+    try {
+        const token = req.query.token
+        const decode = jwt.verify(token, "solo_project");
+        if (decode) {
+          console.log(decode)
+        } else {
+          res.send({ msg: "Please Login !!!" });
+        }
+    } catch (error) {
+        res.send({err:error})
+    }
+})
+
 module.exports={
     UserRoute
 }
