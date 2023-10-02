@@ -14,12 +14,16 @@ BannerRoute.get("/", async (req, res) => {
 BannerRoute.patch("/update/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const UpdatedData = await findByIdAndUpdate({ _id: id }, req.body);
-    res.send({ msg: "banner updated successfully" });
+    const UpdatedData = await BannerModel.findByIdAndUpdate(
+      { _id: id },
+      req.body
+    );
+    res.send({ msg: "Banner updated successfully" });
   } catch (error) {
     res.send({ err: error });
   }
 });
+
 
 BannerRoute.post("/", async (req, res) => {
   try {
