@@ -31,7 +31,8 @@ const DoctorSchema = mongoose.Schema({
     email:{type:String,required:true},
     status:{type:String,required:true},
     Availability:{type:Array},
-    isPremium:{type:Boolean,}
+    isPremium:{type:Boolean},
+    doctorProfile:{type:String}
 },{
     versionKey:false
 })

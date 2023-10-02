@@ -4,6 +4,9 @@ const DoctorRoute = express.Router();
 const axios = require("axios");
 const API_KEY = "15106e32380f4441a9e659ec6346fa9c";
 const jwt = require("jsonwebtoken");
+const multer = require('multer');
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
 async function geocodeCity(city) {
   try {
@@ -64,6 +67,7 @@ DoctorRoute.patch("/update", async (req, res) => {
       { _id: decode.doctorID },
       updatedData
     );
+
     res.send({ msg: "doctors data is updated successfully" });
   } catch (error) {
     res.send(error);
@@ -100,9 +104,9 @@ DoctorRoute.get("/", async (req, res) => {
   const newLimit = limit || 6;
   const skip = (newPage - 1) * newLimit;
   if (status) {
-    query['status'] = status;
+    query["status"] = status;
   }
-  console.log(query)
+  console.log(query);
   try {
     if (token) {
       const decode = jwt.verify(token, "solo_project");
