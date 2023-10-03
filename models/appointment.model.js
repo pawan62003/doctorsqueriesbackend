@@ -15,7 +15,8 @@ const appointMentSchema = mongoose.Schema(
     gender: { required: true, type: String },
     status: { required: true, type: String },
     appointmentDay:{required: true, type: String},
-    time:{ required: true, type: String }
+    time:{ required: true, type: String },
+    doctor:{type:String}
   },
   {
     versionKey: false,
