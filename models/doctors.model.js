@@ -36,6 +36,8 @@ const DoctorSchema = mongoose.Schema({
         data: Buffer, // Store binary image data
         contentType: String, // Store the content type (e.g., image/jpeg)
       },
+      timeSlots:{type:Array},
+      
 },{
     versionKey:false
 })
