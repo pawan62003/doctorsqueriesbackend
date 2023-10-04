@@ -11,6 +11,16 @@ BlogRoute.get("/", async (req, res) => {
   }
 });
 
+BlogRoute.get("/:metaUrl", async (req,res) => {
+  try {
+    const  {metaUrl} = req.params;
+    const blogs = await BlogModel.find({metaUrl});
+    res.send(blogs);
+  } catch (error) {
+    res.send({ err: error });
+  }
+})
+
 BlogRoute.post("/", async (req, res) => {
   try {
     const newBlog = new BlogModel(req.body);
