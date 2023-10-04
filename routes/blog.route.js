@@ -9,6 +9,7 @@ BlogRoute.get("/", async (req, res) => {
   } catch (error) {
     res.send({ err: error });
   }
+  
 });
 
 BlogRoute.get("/:metaUrl", async (req,res) => {
