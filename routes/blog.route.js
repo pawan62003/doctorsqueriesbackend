@@ -35,7 +35,7 @@ BlogRoute.post("/", async (req, res) => {
 BlogRoute.delete("/delete/:id", async (req, res) => {
     try {
         const {id} = req.params
-        const afterDeletion = await BlogModel.findByIdandDelete({_id:id})
+        const afterDeletion = await BlogModel.findByIdAndDelete({_id:id})
         res.send({msg:"blog is deleted successfully!"})
     } catch (error) {
         res.send({ err: error });
