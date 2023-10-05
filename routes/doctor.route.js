@@ -103,7 +103,6 @@ DoctorRoute.get("/", async (req, res) => {
   if (status) {
     query['status'] = status;
   }
-
   try {
     if (token) {
       const decode = jwt.verify(token, "solo_project");
