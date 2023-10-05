@@ -31,8 +31,12 @@ OtpRoute.post("/send", async (req, res) => {
     let mailOptions = {
       from: "pawan6200327812@gmail.com",
       to: email,
-      subject: "Doctors Query Appointment verifacation",
-      text: `your varifications OTP is ${otp}`,
+      subject: "Doctors Query OTP Verificatio",
+      text: `
+      Verify OTP : 
+      Subject: OTP Verification, 
+      Message:  Your OTP verification Code is ${otp} 
+      `,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -69,7 +73,6 @@ OtpRoute.post("/send-mail", async (req, res) => {
       to: email,
       subject: "Doctors Query Appointment verifacation",
       text: massage,
-      
     };
 
     transporter.sendMail(mailOptions, function (error, info) {

@@ -99,10 +99,11 @@ DoctorRoute.get("/", async (req, res) => {
   const newPage = page || 1;
   const newLimit = limit || 6;
   const skip = (newPage - 1) * newLimit;
+  
   if (status) {
     query['status'] = status;
   }
-  console.log(query)
+
   try {
     if (token) {
       const decode = jwt.verify(token, "solo_project");
