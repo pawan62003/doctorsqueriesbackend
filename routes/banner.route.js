@@ -9,6 +9,7 @@ BannerRoute.get("/", async (req, res) => {
   } catch (error) {
     res.send({ err: error });
   }
+  
 });
 
 BannerRoute.patch("/update/:id", async (req, res) => {
