@@ -79,11 +79,11 @@ OtpRoute.post("/verify", async (req, res) => {
 
 OtpRoute.post("/send-mail", async (req, res) => {
   try {
-    let { email, massage } = req.body;
+    let { email, massage,subject } = req.body;
     let mailOptions = {
       from: "pawan6200327812@gmail.com",
       to: email,
-      subject: "Doctors Query Appointment verifacation",
+      subject: subject,
       text: massage,
     };
 
