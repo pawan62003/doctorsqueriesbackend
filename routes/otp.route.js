@@ -31,11 +31,23 @@ OtpRoute.post("/send", async (req, res) => {
     let mailOptions = {
       from: "pawan6200327812@gmail.com",
       to: email,
-      subject: "Doctors Query OTP Verificatio",
+      subject: " OTP Verification Code for Doctorsqeries",
       text: `
-      Verify OTP : 
-      Subject: OTP Verification, 
-      Message:  Your OTP verification Code is ${otp} 
+      Dear ${email},
+
+      You are receiving this email because you have initiated the OTP verification process Doctorsqeries.
+
+      Your OTP verification code is: ${otp}
+
+      Please use this code to verify your account within the next 10 minutes. Do not share this code with anyone and do not reply to this email with the code.
+
+      If you encounter any issues or need assistance, please don't hesitate to contact our support team at info@doctorsqueries.com.
+
+      Thank you for using Doctorsqeries.
+
+      Best regards,
+      Doctorsqeries
+      info@doctorsqueries.com
       `,
     };
 
