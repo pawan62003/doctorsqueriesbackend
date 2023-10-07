@@ -70,28 +70,27 @@ UserRoute.get("/",async(req,res) => {
     }
 })
 
-UserRoute.post("/forget",async(req,res) => {
+UserRoute.patch("/forget", async (req, res) => {
     try {
-        const {email,password} = req.body;
-        const user = await UserModel.find({email});
-        if(!user){
-            res.send({msg:'first create Account'})
-        }
-        else{
-            bcrypt.hash(password, 4,async function(err, hash) {
-                if(err){
-                    res.send({err:err})
-                }
-                else{
-                    const afterUpdate = await UserModel.findByIdAndUpdate({_id:user._id},{password:hash})
-                    res.send({msg:'forget password compleated'})
+        const { email, password } = req.body;
+        const user = await UserModel.find({ email });
+        if (user.length === 0) {
+            res.send({ msg: 'First create an account' });
+        } else {
+            bcrypt.hash(password, 4, async function (err, hash) {
+                if (err) {
+                    res.send({ err: err });
+                } else {
+                    let afterUpdate = await UserModel.findByIdAndUpdate(user[0]._id, { password: hash });
+                    res.send({ msg: 'Forget password done' });
                 }
             });
         }
     } catch (error) {
-        res.send({err:error})
+        res.send({ err: error });
     }
-})
+});
+
 
 module.exports={
     UserRoute
