@@ -55,6 +55,27 @@ AdminRoute.post("/login",async(req,res)=>{
     }
 })
 
+AdminRoute.patch("/forget", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await AdminModel.find({ email });
+        if (user.length === 0) {
+            res.send({ msg: 'First create an account' });
+        } else {
+            bcrypt.hash(password, 4, async function (err, hash) {
+                if (err) {
+                    res.send({ err: err });
+                } else {
+                    let afterUpdate = await AdminModel.findByIdAndUpdate(user[0]._id, { password: hash });
+                    res.send({ msg: 'Forget password done' });
+                }
+            });
+        }
+    } catch (error) {
+        res.send({ err: error });
+    }
+});
+
 module.exports={
     AdminRoute
 }

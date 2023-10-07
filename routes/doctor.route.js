@@ -99,9 +99,9 @@ DoctorRoute.get("/", async (req, res) => {
   const newPage = page || 1;
   const newLimit = limit || 6;
   const skip = (newPage - 1) * newLimit;
-  
+
   if (status) {
-    query['status'] = status;
+    query["status"] = status;
   }
   try {
     if (token) {
@@ -230,16 +230,18 @@ DoctorRoute.post("/login", async (req, res) => {
 
 DoctorRoute.patch("/forget", async (req, res) => {
   try {
-      const { email, password } = req.body;
-      const user = await DoctorModel.find({ email });
-      if (user.length === 0) {
-          res.send({ msg: 'First create an account' });
-      } else {
-                  let afterUpdate = await DoctorModel.findByIdAndUpdate(user[0]._id, { password });
-                  res.send({ msg: 'Forget password done' });
-      }
+    const { email, password } = req.body;
+    const user = await DoctorModel.find({ email });
+    if (user.length === 0) {
+      res.send({ msg: "First create an account" });
+    } else {
+      let afterUpdate = await DoctorModel.findByIdAndUpdate(user[0]._id, {
+        password,
+      });
+      res.send({ msg: "Forget password done" });
+    }
   } catch (error) {
-      res.send({ err: error });
+    res.send({ err: error });
   }
 });
 
