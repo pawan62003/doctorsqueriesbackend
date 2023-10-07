@@ -227,6 +227,22 @@ DoctorRoute.post("/login", async (req, res) => {
     res.send({ err: error });
   }
 });
+
+DoctorRoute.patch("/forget", async (req, res) => {
+  try {
+      const { email, password } = req.body;
+      const user = await DoctorModel.find({ email });
+      if (user.length === 0) {
+          res.send({ msg: 'First create an account' });
+      } else {
+                  let afterUpdate = await DoctorModel.findByIdAndUpdate(user[0]._id, { password });
+                  res.send({ msg: 'Forget password done' });
+      }
+  } catch (error) {
+      res.send({ err: error });
+  }
+});
+
 module.exports = {
   DoctorRoute,
 };
