@@ -9,7 +9,6 @@ UserRoute.post('/signup',async(req,res)=>{
     const {email,password} = req.body
     try {
         const user = await UserModel.find({email})
-        console.log(user)
         if(user.length!==0){
             res.send({"msg":"user is allready registerd Please Login !!"})
         }
@@ -65,6 +64,29 @@ UserRoute.get("/",async(req,res) => {
         res.send(user[0].name)
         } else {
           res.send({ msg: "Please Login !!!" });
+        }
+    } catch (error) {
+        res.send({err:error})
+    }
+})
+
+UserRoute.post("/forget",async(req,res) => {
+    try {
+        const {email,password} = req.body;
+        const user = await UserModel.find({email});
+        if(!user){
+            res.send({msg:'first create Account'})
+        }
+        else{
+            bcrypt.hash(password, 4,async function(err, hash) {
+                if(err){
+                    res.send({err:err})
+                }
+                else{
+                    const afterUpdate = await UserModel.findByIdAndUpdate({_id:user._id},{password:hash})
+                    res.send({msg:'forget password compleated'})
+                }
+            });
         }
     } catch (error) {
         res.send({err:error})
