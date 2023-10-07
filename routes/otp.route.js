@@ -77,6 +77,7 @@ OtpRoute.post("/verify", async (req, res) => {
   }
 });
 
+
 OtpRoute.post("/send-mail", async (req, res) => {
   try {
     let { email, massage,subject } = req.body;
