@@ -29,7 +29,7 @@ HospitalRoute.delete("/delete/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const afterDeletion = await HospitalModel.findByIdAndDelete({ _id: id });
-    res.send({ msg: `hospital deleted with id: ${id}` });
+    res.send({ msg: `hospital deleted` });
   } catch (error) {
     res.send(error);
   }

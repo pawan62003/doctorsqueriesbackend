@@ -87,7 +87,6 @@ OtpRoute.post("/send-mail", async (req, res) => {
       subject: subject,
       text: massage,
     };
-
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         res.send({ err: error });
