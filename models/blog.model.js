@@ -1,14 +1,15 @@
 const mongoose = require("mongoose")
 
 const BlogSchema = mongoose.Schema({
-    image:{type:String,required:true},
-    auther:{type:String,required:true},
-    date:{type:String},
-    description:{type:String,required:true},
-    title:{type:String,required:true},
-    metaUrl:{type:String,required:true}
+    Url:{type:String,required:true},
+    Title:{type:String,required:true},
+    MetaTitle :{type:String},
+    MetaDescription:{type:String,required:true},
+    MetaTag:{type:String,required:true},
+    FeaturedImage:{type:String,required:true}
 })
 
+ 
 const BlogModel = mongoose.model("blog",BlogSchema)
 
 module.exports = {
