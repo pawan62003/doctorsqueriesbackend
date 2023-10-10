@@ -193,6 +193,7 @@ DoctorRoute.post("/", async (req, res) => {
     const find = await DoctorModel.find({ email: req.body.email });
 
     if (find.length > 0) {
+      
       res.send({ msg: "Accout allredy created with this email" });
     } else {
       const data = new DoctorModel(req.body);
