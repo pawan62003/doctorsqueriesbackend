@@ -30,7 +30,6 @@ server.use("/appointment", AppointmentRoute);
 server.use("/otp", OtpRoute);
 server.use("/blog", BlogRoute);
 
-
 const PORT = process.env.PORT || 8585;
 server.listen(PORT, async () => {
   try {
