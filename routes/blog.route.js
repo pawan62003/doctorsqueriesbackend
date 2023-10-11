@@ -42,7 +42,7 @@ BlogRoute.delete("/delete/:id", async (req, res) => {
     }
 });
 
-BlogRoute.post("/update/:id",async(req,res) => {
+BlogRoute.patch("/update/:id",async(req,res) => {
   try {
     const {id} = req.params
     const afterUpdation = await BlogModel.findByIdAndUpdate({_id:id},req.body)
