@@ -12,10 +12,10 @@ BlogRoute.get("/", async (req, res) => {
   
 });
 
-BlogRoute.get("/:metaUrl", async (req,res) => {
+BlogRoute.get("/:MetaTitle", async (req,res) => {
   try {
-    const  {metaUrl} = req.params;
-    const blogs = await BlogModel.find({metaUrl});
+    const  {MetaTitle} = req.params;
+    const blogs = await BlogModel.find({MetaTitle});
     res.send(blogs);
   } catch (error) {
     res.send({ err: error });
