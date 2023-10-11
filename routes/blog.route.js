@@ -42,6 +42,16 @@ BlogRoute.delete("/delete/:id", async (req, res) => {
     }
 });
 
+BlogRoute.post("/update/:id",async(req,res) => {
+  try {
+    const {id} = req.params
+    const afterUpdation = await BlogModel.findByIdAndUpdate({_id:id},req.body)
+    res.send({msg:"blog is updated successfully!"})
+  } catch (error) {
+    res.send({ err: error });
+  }
+})
+
 
 module.exports = {
   BlogRoute,
