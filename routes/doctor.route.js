@@ -137,7 +137,7 @@ DoctorRoute.get("/:id", async (req, res) => {
 });
 
 DoctorRoute.get("/doctors/near", async (req, res) => {
-  const { lat: latitude, lon: longitude, cat, status, day } = req.query;
+  const { lat: latitude, lon: longitude, cat, status, day, min, max } = req.query;
 
   try {
     const distances = [];
@@ -152,6 +152,10 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
 
     if (day) {
       query.Availability = { $in: [day] };
+    }
+
+    if (min && max) {
+      query.fees = { $gte: min, $lte: max };
     }
 
     const doctors = await DoctorModel.find(query);
@@ -183,6 +187,7 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
     res.status(500).json({ error: "An error occurred" });
   }
 });
+
 
 
 DoctorRoute.post("/", async (req, res) => {
