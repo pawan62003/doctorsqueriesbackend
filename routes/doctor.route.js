@@ -151,7 +151,7 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
     };
 
     if (day) {
-      query.days = { $in: [day] };
+      query.Availability = { $in: [day] };
     }
 
     const doctors = await DoctorModel.find(query);
