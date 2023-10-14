@@ -137,7 +137,7 @@ DoctorRoute.get("/:id", async (req, res) => {
 });
 
 DoctorRoute.get("/doctors/near", async (req, res) => {
-  const { lat: latitude, lon: longitude, cat, status } = req.query;
+  const { lat: latitude, lon: longitude, cat, status, day } = req.query;
 
   try {
     const distances = [];
@@ -145,10 +145,16 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
       .split(" ")
       .map((term) => `(?=.*${term})`)
       .join("");
-    const doctors = await DoctorModel.find({
+    const query = {
       spacility: { $regex: regexPattern, $options: "i" },
       status,
-    });
+    };
+
+    if (day) {
+      query.days = { $in: [day] };
+    }
+
+    const doctors = await DoctorModel.find(query);
     for (const person of doctors) {
       const { location: doctorlocation } = person;
       const location = await geocodeCity(`${doctorlocation},India, india`);
@@ -167,26 +173,17 @@ DoctorRoute.get("/doctors/near", async (req, res) => {
       }
     }
 
-    // if (distances.length >= 3) {
-    //   distances.sort((a, b) => a.distance - b.distance);
-    //   const nearestPersons = distances
-    //     .slice(0, 3)
-    //     .map(({ person }) => person);
-
-    //   res.json(nearestPersons);
-    // }
-    // else {
-    //   distances.sort((a, b) => a.distance - b.distance);
-    //   const nearestPersons = distances.map(({ person }) => person);
-
-    //   res.json(nearestPersons);
-    // }
     distances.sort((a, b) => a.distance - b.distance);
     const nearestPersons = distances.map(({ person }) => person);
 
     res.json(nearestPersons);
-  } catch (error) {}
+  } catch (error) {
+    // Handle errors appropriately
+    console.error(error);
+    res.status(500).json({ error: "An error occurred" });
+  }
 });
+
 
 DoctorRoute.post("/", async (req, res) => {
   try {
